@@ -7,7 +7,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <iostream>
 
 
 SceneNode::SceneNode()
@@ -33,21 +32,21 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node)
 	return result;
 }
 
-void SceneNode::update(sf::Time dt)
+void SceneNode::update(sf::Time dt, CommandQueue& commands)
 {
-	updateCurrent(dt);
-	updateChildren(dt);
+	updateCurrent(dt, commands);
+	updateChildren(dt, commands);
 }
 
-void SceneNode::updateCurrent(sf::Time)
+void SceneNode::updateCurrent(sf::Time, CommandQueue& commands)
 {
 	// Do nothing by default
 }
 
-void SceneNode::updateChildren(sf::Time dt)
+void SceneNode::updateChildren(sf::Time dt, CommandQueue& commands)
 {
 	for(Ptr& child : mChildren)
-		child->update(dt);
+		child->update(dt, commands);
 }
 
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -59,7 +58,7 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	drawCurrent(target, states);
 	drawChildren(target, states);
 
-	drawBoundingRect(target, states);
+	//drawBoundingRect(target, states);
 }
 
 void SceneNode::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
@@ -111,9 +110,10 @@ std::vector<sf::FloatRect> SceneNode::getBoundingRect() const
 	return bounds;
 }
 
+
 void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	std::vector<sf::FloatRect>& rects = getBoundingRect();
+	const std::vector<sf::FloatRect>& rects = getBoundingRect();
 
 	for (auto rect : rects)
 	{
@@ -127,6 +127,7 @@ void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates stat
 		target.draw(shape);
 	}
 }
+
 
 void SceneNode::checkSceneCollision(SceneNode& sceneGraph, std::set<Pair>& collisionPairs)
 {
@@ -156,6 +157,11 @@ bool SceneNode::isDestroyed() const
 	return false;
 }
 
+bool SceneNode::isMarkedForRemoval() const
+{
+	return isDestroyed();
+}
+
 bool collision(const SceneNode& lhs, const SceneNode& rhs)
 {
 	for (auto leftBound : lhs.getBoundingRect())
@@ -175,6 +181,19 @@ bool collision(const SceneNode& lhs, const SceneNode& rhs)
 SceneNode* SceneNode::getLastChild()
 {
 	return mChildren.back().get();
+}
+
+const std::vector<SceneNode::Ptr>& SceneNode::getChilds() const
+{
+	return mChildren;
+}
+
+void SceneNode::removeWrecks()
+{
+	auto wreckfiledBegin = std::remove_if(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::isMarkedForRemoval));
+	mChildren.erase(wreckfiledBegin, mChildren.end());
+
+	std::for_each(mChildren.begin(), mChildren.end(), std::mem_fn(&SceneNode::removeWrecks));
 }
 
 

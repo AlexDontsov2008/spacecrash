@@ -24,7 +24,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 	mPausedText.setPosition(0.5f * windowSize.x, 0.4f * windowSize.y);
 
 	auto returnButton = std::make_shared<GUI::Button>(GUI::Button::PlayButton, *context.fonts, *context.textures);
-	returnButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 75);
+	returnButton->setPosition(0.5f * windowSize.x - 150.f, 0.4f * windowSize.y + 75);
 	returnButton->setText("Return");
 	returnButton->setTextSize(25);
 	returnButton->setCallback([this] ()
@@ -33,7 +33,7 @@ PauseState::PauseState(StateStack& stack, Context context)
 	});
 
 	auto backToMenuButton = std::make_shared<GUI::Button>(GUI::Button::ExitButton, *context.fonts, *context.textures);
-	backToMenuButton->setPosition(0.5f * windowSize.x - 100, 0.4f * windowSize.y + 175);
+	backToMenuButton->setPosition(0.5f * windowSize.x - 150.f, 0.4f * windowSize.y + 175);
 	backToMenuButton->setText("Back to menu");
 	backToMenuButton->setTextSize(20);
 	backToMenuButton->setCallback([this] ()

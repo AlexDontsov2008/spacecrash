@@ -7,8 +7,7 @@
 #include <Book/MenuState.hpp>
 #include <Book/PauseState.hpp>
 #include <Book/SettingsState.hpp>
-
-#include <iostream>
+#include <Book/GameOverState.hpp>
 
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f/60.f);
@@ -66,7 +65,7 @@ void Application::loadTextures()
 
 void Application::run()
 {
-	std::cout << "Antialiasing level: " << mWindow.getSettings().antialiasingLevel << std::endl;
+	//std::cout << "Antialiasing level: " << mWindow.getSettings().antialiasingLevel << std::endl;
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
@@ -140,4 +139,5 @@ void Application::registerStates()
 	mStateStack.registerState<GameState>(States::Game);
 	mStateStack.registerState<PauseState>(States::Pause);
 	mStateStack.registerState<SettingsState>(States::Settings);
+	mStateStack.registerState<GameOverState>(States::GameOver);
 }

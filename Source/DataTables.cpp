@@ -2,6 +2,8 @@
 #include <Book/Spaceship.hpp>
 #include <Book/Planet.hpp>
 
+#include <ctime>
+
 
 std::vector<SpaceshipData> initializeSpaceshipData()
 {
@@ -16,33 +18,29 @@ std::vector<SpaceshipData> initializeSpaceshipData()
 
 std::vector<PlanetData> initializePlanetData()
 {
+	std::srand(std::time(NULL));
+
 	std::vector<PlanetData> data(Planet::TypeCount);
 
-	data[Planet::Earth].speed = -30.f;
+	data[Planet::Earth].speed = 45.f;
 	data[Planet::Earth].texutre = Textures::Earth;
-	data[Planet::Earth].directions.push_back(Direction(+0.f, 200.f));
-	//data[Planet::Earth].directions.push_back(Direction(-45.f, 160.f));
-	//data[Planet::Earth].directions.push_back(Direction(+45.f, 80.f));
+	data[Planet::Earth].directions.push_back(Direction(20, 1000.f));
 
-	//data[Planet::Jupiter].speed = 40.f;
-	//data[Planet::Jupiter].texutre = Textures::Jupiter;
-	//data[Planet::Jupiter].directions.push_back(Direction(+85.f, 40.f));
-	//data[Planet::Jupiter].directions.push_back(Direction(-85.f, 80.f));
-	//data[Planet::Jupiter].directions.push_back(Direction(+85.f, 40.f));
-
-	//data[Planet::Mars].speed = 80.f;
-	//data[Planet::Mars].texutre = Textures::Mars;
-	//data[Planet::Mars].directions.push_back(Direction(+45.f, 60.f));
-	//data[Planet::Mars].directions.push_back(Direction(0.f, 30.f));
-	//data[Planet::Mars].directions.push_back(Direction(-45.f, 60.f));
-	//data[Planet::Mars].directions.push_back(Direction(0.f, 30.f));
-
-	data[Planet::Pluton].speed = -35.f;
+	data[Planet::Pluton].speed = 50.f;
 	data[Planet::Pluton].texutre = Textures::Pluton;
-	data[Planet::Pluton].directions.push_back(Direction(+0.f, 250.f));
-	//data[Planet::Pluton].directions.push_back(Direction(-45.f, 30.f));
-	//data[Planet::Pluton].directions.push_back(Direction(0.f, 80.f));
-	//data[Planet::Pluton].directions.push_back(Direction(-40.f, 20.f));
+	data[Planet::Pluton].directions.push_back(Direction(0.f, 1000.f));
+
+	data[Planet::AsteroidGreate].speed = 70.f;
+	data[Planet::AsteroidGreate].texutre = Textures::AsteroidGreate;
+	data[Planet::AsteroidGreate].directions.push_back(Direction((rand() % 15) * 1.f, 1000.f));
+
+	data[Planet::AsteroidAverage].speed = 90.f;
+	data[Planet::AsteroidAverage].texutre = Textures::AsteroidAverage;
+	data[Planet::AsteroidAverage].directions.push_back(Direction(-15, 1000.f));
+
+	data[Planet::AsteroidLittle].speed = 110.f;
+	data[Planet::AsteroidLittle].texutre = Textures::AsteroidLittle;
+	data[Planet::AsteroidLittle].directions.push_back(Direction(10.f, 1000.f));
 
 	return data;
 }

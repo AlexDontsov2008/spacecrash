@@ -90,7 +90,7 @@ void Button::setText(const std::string& text)
 	centerOrigin(mText);
 }
 
-void Button::setTextSize(size_t size)
+void Button::setTextSize(unsigned int size)
 {
 	mText.setCharacterSize(size);
 }

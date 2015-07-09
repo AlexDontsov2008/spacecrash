@@ -14,29 +14,14 @@ namespace
 
 
 Spaceship::Spaceship(Spaceship::Type type, const TextureHolder& textures)
-: mType(type)
+: Entity(Table[type].hitpoints)
+, mType(type)
 , mSprite(textures.get(Table[type].texture))
 , mFlag(true)
 , mTextures(textures)
-, mHitpoints(Table[type].hitpoints)
-, Entity()
+, mIsMarkedForRemoval(false)
 {
 	centerOrigin(mSprite);
-}
-
-void Spaceship::repair(int points)
-{
-	mHitpoints += points;
-}
-
-void Spaceship::damage(int points)
-{
-	mHitpoints -= points;
-}
-
-void Spaceship::destroy()
-{
-	mHitpoints = 0;
 }
 
 void Spaceship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
@@ -53,10 +38,8 @@ unsigned int Spaceship::getCategory() const
 	}
 }
 
-void Spaceship::updateCurrent(sf::Time dt)
+void Spaceship::updateAnimation(sf::Time dt)
 {
-	Entity::updateCurrent(dt);
-
 	static sf::Time time = sf::Time::Zero;
 
 	if (time.asSeconds() >= 0.f && time.asSeconds() < 0.1f)
@@ -79,10 +62,18 @@ void Spaceship::updateCurrent(sf::Time dt)
 	time += dt;
 }
 
-int Spaceship::getHitpoints() const
+
+void Spaceship::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
-	return mHitpoints;
+	if (isDestroyed())
+	{
+		mIsMarkedForRemoval = true;
+		return;
+	}
+	Entity::updateCurrent(dt, commands);
+	updateAnimation(dt);
 }
+
 
 std::vector<sf::FloatRect> Spaceship::getBoundingRect() const
 {
@@ -136,4 +127,9 @@ std::vector<sf::FloatRect> Spaceship::getBoundingRect() const
 	rects.push_back(getWorldTransform().transformRect(bounds));
 
 	return rects;
+}
+
+bool Spaceship::isMarkedForRemoval() const
+{
+	return mIsMarkedForRemoval;
 }

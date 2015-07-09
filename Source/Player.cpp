@@ -32,7 +32,10 @@ struct SpaceshipMover
 };
 
 
+
 Player::Player()
+: mCurrentMissionStatus(MissionRunning)
+, mPoints(0.f)
 {
 	// Set initial key bindings
 	mKeyBinding[sf::Keyboard::Left] = RotateLeft;
@@ -99,7 +102,7 @@ sf::Keyboard::Key Player::getAssignedKey(Action action) const
 void Player::initializeActions()
 {
 	const float angle = 100.f;
-	const float radius = 150.f;
+	const float radius = 250.f;
 
 	mActionBinding[RotateLeft].action	= derivedAction<Spaceship>(SpaceshipMover(-angle, 0.f));
 	mActionBinding[RotateRight].action	= derivedAction<Spaceship>(SpaceshipMover(+angle, 0.f));
@@ -120,4 +123,25 @@ bool Player::isRealtimeAction(Action action)
 		default:
 			return false;
 	}
+}
+
+void Player::setMissionStatus(MissionStatus status)
+{
+	mCurrentMissionStatus = status;
+}
+
+Player::MissionStatus Player::getMissionStatus() const
+{
+	return mCurrentMissionStatus;
+}
+
+float Player::getPoints() const
+{
+	return mPoints;
+}
+
+
+void Player::setPoints(float points)
+{
+	mPoints = points;
 }
