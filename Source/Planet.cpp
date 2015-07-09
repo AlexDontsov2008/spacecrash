@@ -85,16 +85,6 @@ float Planet::getMaxSpeed() const
 	return Table[mType].speed;
 }
 
-/*
-void Planet::updateSattelites(sf::Time dt)
-{
-	for (auto sattelite : mSattelites)
-	{
-		sattelite->updateCurrent(mSprite.getPosition(), dt);
-	}
-}
-*/
-
 void Planet::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	if (isDestroyed())
@@ -105,9 +95,7 @@ void Planet::updateCurrent(sf::Time dt, CommandQueue& commands)
 
 	updateMovementPattern(dt);
 	mSprite.rotate(15 * dt.asSeconds());
-    //updateSattelites(dt);
 	Entity::updateCurrent(dt, commands);
-
 }
 
 
@@ -131,6 +119,7 @@ std::vector<sf::FloatRect> Planet::getBoundingRect() const
 		bounds.left = -mSprite.getTextureRect().width / 2.f;
 		bounds.top = -mSprite.getTextureRect().height / 2.f;
 
+		// Add Collision Rectangles
 		addRect(bounds, 4.f, 60.f, 80.f, 30.f);
 		rects.push_back(getWorldTransform().transformRect(bounds));
 		addRect(bounds, 30.f, -35.f, 150.f, 30.f);
@@ -165,7 +154,7 @@ std::vector<sf::FloatRect> Planet::getBoundingRect() const
 
 unsigned int Planet::getCategory() const
 {
-	return Category::Sattelite;
+	return Category::Planet;
 }
 
 bool Planet::isMarkedForRemoval() const
