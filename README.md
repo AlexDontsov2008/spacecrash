@@ -1,7 +1,3 @@
 # spacecrash
-C++ game on SFML
-
-Собирается с помощью CMake.
-Игра написана целиком на С++ с использованием библиотеки SFML http://www.sfml-dev.org/
-
-Является кроссплатформенной и поддерживается на Linux, Windows, Mac OS.
+Simple, arcade game was written with C++ and SFML.
+Supporting OS: Linux/Windows/Mac OS
